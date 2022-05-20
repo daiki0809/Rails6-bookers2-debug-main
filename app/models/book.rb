@@ -1,6 +1,13 @@
 class Book < ApplicationRecord
   belongs_to :user
 
+  has_many :favorites
+  has_many :book_comments
+
   validates :title, presence: true
   validates :body, presence: true, length: { maximum: 200 }
+
+  def get_favorites?(user)
+    favorites.exists?(user_id: user.id)
+  end
 end

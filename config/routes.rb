@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'event_mails/new'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   devise_for :users
@@ -19,6 +20,8 @@ Rails.application.routes.draw do
 
   resources :groups do
     resource :group_users, only: [:create, :destroy]
+    resource :event_mails, only: [:new, :create]
+    get "event_mail_result" => "event_mails#result", as: "event_email_result"
   end
 
   get "search" => "searches#search", as: 'search'

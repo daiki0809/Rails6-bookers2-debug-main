@@ -6,10 +6,17 @@ class GroupsController < ApplicationController
   end
 
   def create
-    group = Group.new(group_params)
-    group.owner_id = current_user.id
-    group.save
-    redirect_to groups_path
+    @group = Group.new(group_params)
+    @group.owner_id = current_user.id
+    @group.transaction do
+      @group.save!
+      current_user.group_users.create!(group_id: @group.id)
+    end
+    # トランザクション成功時の処理
+      redirect_to groups_path
+    rescue => e
+    # トランザクション失敗時の処理
+      render :new
   end
 
   def index

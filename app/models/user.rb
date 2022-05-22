@@ -40,6 +40,10 @@ class User < ApplicationRecord
     followings.include?(user)
   end
 
+  def get_group_join?(group_id)
+    group_users.exists?(group_id: group_id)
+  end
+
   def self.looks(search, word)
     if search == "perfect_match"
       @user = User.where("name LIKE?", "#{word}")
